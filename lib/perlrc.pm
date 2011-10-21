@@ -98,6 +98,15 @@ Some cases where this module may be handy are:
 
 L<perlrun/-f>, L<Begin>
 
+=head1 BUGS
+
+At the moment, it only works on Unix systems.
+
+Feel free to fork and send me a pull request with the modifications
+required to make it work under Windows or any other operating systems.
+
+The code is at GitHub: L<https://github.com/salva/p5-perlrc>.
+
 =head1 AUTHOR
 
 Salvador FandiE<ntilde>o, E<lt>sfandino@yahoo.comE<gt>
