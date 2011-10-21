@@ -84,13 +84,21 @@ Some cases where this module may be handy are:
 
 =over
 
-=item modify @INC to include some paths
+=item *
 
-=item mock your development environment to mimic the one in production
+modify @INC to include some extra paths
 
-=item load modules and define constants accesible from one-liners
+=item *
 
-=item etc.
+mock your development environment to mimic the one in production
+
+=item *
+
+load modules and define constants accesible from one-liners
+
+=item *
+
+etc.
 
 =back
 
