@@ -4,3 +4,4 @@ MANIFEST
 README
 t/perlrc.t
 lib/perlrc.pm
+samples/.perlrc

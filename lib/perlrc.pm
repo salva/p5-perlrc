@@ -1,84 +1,113 @@
 package perlrc;
 
-use 5.012004;
-use strict;
-use warnings;
-
-require Exporter;
-
-our @ISA = qw(Exporter);
-
-# Items to export into callers namespace by default. Note: do not export
-# names by default without a very good reason. Use EXPORT_OK instead.
-# Do not simply export all your public functions/methods/constants.
-
-# This allows declaration	use perlrc ':all';
-# If you do not need this, moving things directly into @EXPORT or @EXPORT_OK
-# will save memory.
-our %EXPORT_TAGS = ( 'all' => [ qw(
-	
-) ] );
-
-our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
-
-our @EXPORT = qw(
-	
-);
-
 our $VERSION = '0.01';
 
+use strict;
+use warnings;
+use Carp;
 
-# Preloaded methods go here.
+sub _home {
+    my $user = shift;
+    my $uid = (length $user ? getpwnam($user) : $>);
+    defined $uid or return "~$user";
+    my $home = (getpwuid $uid)[7];
+    defined $home or return "~$user";
+    $home
+}
+
+sub import {
+    shift;
+    my $path;
+    if (@_) {
+        $path = join(',', @_);
+    }
+    else {
+        $path = '~/.perlrc:/etc/perlrc';
+    }
+
+    my @path = split /:/, $path;
+    for my $file (@path) {
+        $file =~ s/^~([^\/]*)/_home($1)/e;
+        $file = '.' unless length $file;
+        $file =~ s/\/*$/\/.perlrc/ if -d $file;
+        my @files = $file;
+        push @files, "$file.pl" unless $file =~ /\.pl$/;
+        for (@files) {
+            if (-f $_) {
+                package main;
+                do $_;
+                return;
+            }
+        }
+    }
+    warn "no perlrc file found in $path\n";
+}
 
 1;
 __END__
-# Below is stub documentation for your module. You'd better edit it!
 
 =head1 NAME
 
-perlrc - Perl extension for blah blah blah
+perlrc - run perlrc file before script
 
 =head1 SYNOPSIS
 
-  use perlrc;
-  blah blah blah
+  $ perl -Mperlrc script.pl
+  $ perl -Mperlrc=/path1:/path2:...
 
 =head1 DESCRIPTION
 
-Stub documentation for perlrc, created by h2xs. It looks like the
-author of the extension was negligent enough to leave the stub
-unedited.
+This module executes a perlrc file containing perl code before calling
+the main script.
 
-Blah blah blah.
+By default it looks for the perlrc file in the following locations:
 
-=head2 EXPORT
+  ~/.perlrc
+  ~/.perlrc.pl
+  /etc/perlrc
+  /etc/perlrc.pl
 
-None by default.
+Alternatively, a list of directories and/or files can be passed to the
+module. For instance:
+
+  $ perl -Mperlrc=~root/:/tmp/myperlrc
+
+Then the module would look for the perlrc file in
+
+  ~root/.perlrc
+  ~root/.perlrc.pl
+  /tmp/myperlrc      # asumming /tmp/myperlrc is not a directory
+  /tmp/myperlrc.pl
 
 
+Some cases where this module may be handy are:
+
+=over
+
+=item modify @INC to include some paths
+
+=item mock your development environment to mimic the one in production
+
+=item load modules and define constants accesible from one-liners
+
+=item etc.
+
+=back
 
 =head1 SEE ALSO
 
-Mention other useful documentation such as the documentation of
-related modules or operating system documentation (such as man pages
-in UNIX), or any relevant external documentation such as RFCs or
-standards.
-
-If you have a mailing list set up for your module, mention it here.
-
-If you have a web site set up for your module, mention it here.
+L<perlrun/-f>, L<Begin>
 
 =head1 AUTHOR
 
-Salvador Fandiño, E<lt>salva@E<gt>
+Salvador Fandiño, E<lt>sfandino@yahoo.comE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2011 by Salvador Fandiño
+Copyright (C) 2011 by Qindel FormaciE<ocaute>n y Servicios S.L.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.12.4 or,
 at your option, any later version of Perl 5 you may have available.
-
 
 =cut
