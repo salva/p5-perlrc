@@ -100,11 +100,11 @@ L<perlrun/-f>, L<Begin>
 
 =head1 AUTHOR
 
-Salvador Fandiño, E<lt>sfandino@yahoo.comE<gt>
+Salvador FandiE<ntilde>o, E<lt>sfandino@yahoo.comE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2011 by Qindel FormaciE<ocaute>n y Servicios S.L.
+Copyright (C) 2011 by Qindel FormaciE<oacute>n y Servicios S.L.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.12.4 or,

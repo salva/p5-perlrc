@@ -3,5 +3,6 @@ Makefile.PL
 MANIFEST
 README
 t/perlrc.t
+t/pods.t
 lib/perlrc.pm
 samples/.perlrc
