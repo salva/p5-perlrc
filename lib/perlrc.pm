@@ -35,7 +35,9 @@ sub import {
         for (@files) {
             if (-f $_) {
                 package main;
+                local ($!, $@);
                 do $_;
+                warn if $@;
                 return;
             }
         }
