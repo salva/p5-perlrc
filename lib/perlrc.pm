@@ -110,7 +110,7 @@ L<perlrun/-f>, L<Begin>
 
 =head1 BUGS
 
-At the moment, it only works on Unix systems.
+At the moment, it only works on Unix systems and Cygwin.
 
 Feel free to fork and send me a pull request with the modifications
 required to make it work under Windows or any other operating systems.
